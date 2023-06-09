@@ -1,6 +1,7 @@
 package com.greenjiao.coc.common.bean;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.fasterxml.jackson.datatype.jsr310.deser.LocalDateTimeDeserializer;
@@ -22,7 +23,11 @@ import java.util.List;
  */
 @Data
 @AllArgsConstructor
+@JsonIgnoreProperties(value = {"enabled","password","username","accountNonExpired","accountNonLocked","credentialsNonExpired"})
 public class LoginUser implements UserDetails {
+    public LoginUser(){
+
+    }
     private User user;
     /**
      * 过期时间

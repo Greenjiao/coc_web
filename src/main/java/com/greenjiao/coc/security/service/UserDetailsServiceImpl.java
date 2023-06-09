@@ -3,12 +3,16 @@ package com.greenjiao.coc.security.service;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.greenjiao.coc.bean.User;
 import com.greenjiao.coc.common.bean.LoginUser;
+import com.greenjiao.coc.common.constant.CommonConstant;
 import com.greenjiao.coc.common.exception.ServiceException;
+import com.greenjiao.coc.manager.AsyncManager;
+import com.greenjiao.coc.manager.factory.AsyncFactory;
 import com.greenjiao.coc.mapper.UserMapper;
 import com.greenjiao.coc.mapper.query.UserQuery;
 import com.greenjiao.coc.security.utils.JwtUtils;
 import com.greenjiao.coc.utils.CocUtils;
 import com.greenjiao.coc.utils.RedisUtils;
+import com.greenjiao.coc.utils.sys.MessageUtils;
 import lombok.Data;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.ObjectUtils;
@@ -43,10 +47,14 @@ public class UserDetailsServiceImpl implements UserDetailsService {
         QueryWrapper<User> userQueryWrapper = UserQuery.selectByAccountQuery(username, true);
         User user = userMapper.selectOne(userQueryWrapper);
         if (ObjectUtils.isEmpty(user)) {
-            log.info("登录用户：{} 不存在.", username);
-            throw new ServiceException(HttpStatus.UNAUTHORIZED.value(), "登录用户：" + username + " 不存在");
+//            log.info("登录用户：{} 不存在.", username);
+            String message = MessageUtils.message("user.account.not.exist", username);
+            AsyncManager.me().execute(AsyncFactory.recordLogininfor(username, CommonConstant.LOGIN_FAIL, message));
+            throw new ServiceException(HttpStatus.UNAUTHORIZED.value(), message);
         } else if (user.getBanned()) {
-            throw new ServiceException(HttpStatus.FORBIDDEN.value(), "该账号：" + username + " 已封禁");
+            String message = MessageUtils.message("user.blocked", username);
+            AsyncManager.me().execute(AsyncFactory.recordLogininfor(username, CommonConstant.LOGIN_FAIL, message));
+            throw new ServiceException(HttpStatus.FORBIDDEN.value(),message);
         }
 
         passwordService.validate(user);

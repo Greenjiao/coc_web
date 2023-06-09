@@ -20,12 +20,12 @@ public class CommonConstant {
     /**
      * 通用成功标识
      */
-    public static final String SUCCESS = "0";
+    public static final String SUCCESS = "1";
 
     /**
      * 通用失败标识
      */
-    public static final String FAIL = "1";
+    public static final String FAIL = "0";
 
     /**
      * 登录成功

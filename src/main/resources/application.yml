@@ -18,15 +18,15 @@ spring:
       database: 0
       jedis:
         pool:
-          #??????
+          # 最大连接时长
           max-active: 10
-          #??????
+          # 最大等待时长
           max-wait: 3000
-          #????
+          # 最大连接数
           max-idle: 8
-          #????
+          # 最小连接数
           min-idle: 2
-      #????
+      # 超时
       connect-timeout: 5000
 #  web:
 #    resources:
@@ -58,7 +58,6 @@ logging:
 #    sql: debug
 #    root: info
 
-# ????
 user:
   password:
     # 最大重试次数

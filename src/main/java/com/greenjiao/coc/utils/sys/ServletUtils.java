@@ -1,5 +1,7 @@
 package com.greenjiao.coc.utils.sys;
 
+import cn.hutool.extra.servlet.JakartaServletUtil;
+import com.alibaba.fastjson2.JSON;
 import com.greenjiao.coc.utils.CocUtils;
 import jakarta.servlet.ServletRequest;
 import jakarta.servlet.http.HttpServletRequest;
@@ -21,9 +23,22 @@ import java.util.Map;
 /**
  * 客户端工具类
  *
- * @author ruoyi
  */
+@SuppressWarnings("unused")
 public class ServletUtils {
+
+    /**
+     * 返回 JSON 字符串
+     *
+     * @param response 响应
+     * @param object 对象，会序列化成 JSON 字符串
+     */
+//    @SuppressWarnings("deprecation") // 必须使用 APPLICATION_JSON_UTF8_VALUE，否则会乱码
+    public static void writeJSON(HttpServletResponse response, Object object) {
+        String content = JSON.toJSONString(object);
+        JakartaServletUtil.write(response,content, "application/json;charset=UTF-8");
+    }
+
     /**
      * 获取String参数
      */
@@ -137,7 +152,6 @@ public class ServletUtils {
     /**
      * 是否是Ajax异步请求
      *
-     * @param request
      */
     public static boolean isAjaxRequest(HttpServletRequest request) {
         String accept = request.getHeader("accept");

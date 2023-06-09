@@ -3,6 +3,7 @@ package com.greenjiao.coc.service;
 import com.greenjiao.coc.bean.User;
 import com.greenjiao.coc.common.bean.CommonResult;
 import com.greenjiao.coc.common.bean.LoginUser;
+import com.greenjiao.coc.common.bean.PageResult;
 
 /**
  * <p>
@@ -21,7 +22,7 @@ public interface UserService {
 
     CommonResult<User> logicDeleteById(String id);
 
-    CommonResult<User> selectByEntity(User user, Integer page, Integer limit);
+    PageResult<User> selectByEntity(User user, Integer page, Integer limit);
 
     CommonResult<User> selectByToken(String token);
 

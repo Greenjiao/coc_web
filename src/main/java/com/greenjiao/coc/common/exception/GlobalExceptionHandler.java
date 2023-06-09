@@ -1,10 +1,12 @@
 package com.greenjiao.coc.common.exception;
 
 import com.greenjiao.coc.common.bean.CommonResult;
+import com.greenjiao.coc.security.utils.SecurityUtils;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.ConstraintViolation;
 import jakarta.validation.ConstraintViolationException;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.security.access.AccessDeniedException;
 import org.springframework.validation.BindException;
 import org.springframework.validation.FieldError;
 import org.springframework.web.HttpRequestMethodNotSupportedException;
@@ -14,8 +16,6 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 import org.springframework.web.method.annotation.MethodArgumentTypeMismatchException;
 import org.springframework.web.servlet.NoHandlerFoundException;
-
-import java.nio.file.AccessDeniedException;
 
 import static com.greenjiao.coc.common.enums.ResponseCodeEnum.*;
 
@@ -54,6 +54,9 @@ public class GlobalExceptionHandler {
         if (ex instanceof NoHandlerFoundException) {
             return noHandlerFoundExceptionHandler(request, (NoHandlerFoundException) ex);
         }
+        if (ex instanceof AccessDeniedException){
+            return handleAccessDeniedException( request,(AccessDeniedException) ex);
+        }
         if (ex instanceof ServiceException) {
             return serviceExceptionHandler((ServiceException) ex);
         }
@@ -64,9 +67,9 @@ public class GlobalExceptionHandler {
      * 权限校验异常
      */
     @ExceptionHandler(AccessDeniedException.class)
-    public CommonResult<?> handleAccessDeniedException(AccessDeniedException e, HttpServletRequest request) {
+    public CommonResult<?> handleAccessDeniedException(HttpServletRequest request, AccessDeniedException e){
         String requestURI = request.getRequestURI();
-        log.error("请求地址'{}',权限校验失败'{}'", requestURI, e.getMessage());
+        log.error("请求地址'{}',用户{}权限不足,{}", requestURI, SecurityUtils.getLoginUserId(),e.getMessage());
         return CommonResult.error(FORBIDDEN);
     }
 
@@ -75,7 +78,7 @@ public class GlobalExceptionHandler {
      * <p>
      * 例如说，接口上设置了 @RequestParam("xx") 参数，结果并未传递 xx 参数
      */
-    @ExceptionHandler(value = MissingServletRequestParameterException.class)
+    @ExceptionHandler(MissingServletRequestParameterException.class)
     public CommonResult<?> missingServletRequestParameterExceptionHandler(MissingServletRequestParameterException ex) {
         log.warn("[missingServletRequestParameterExceptionHandler]", ex);
         return CommonResult.error(BAD_REQUEST.getCode(), String.format("请求参数缺失:%s", ex.getParameterName()));
@@ -117,7 +120,7 @@ public class GlobalExceptionHandler {
     /**
      * 处理 Validator 校验不通过产生的异常
      */
-    @ExceptionHandler(value = ConstraintViolationException.class)
+    @ExceptionHandler(ConstraintViolationException.class)
     public CommonResult<?> constraintViolationExceptionHandler(ConstraintViolationException ex) {
         log.warn("[constraintViolationExceptionHandler]", ex);
         ConstraintViolation<?> constraintViolation = ex.getConstraintViolations().iterator().next();
@@ -135,8 +138,9 @@ public class GlobalExceptionHandler {
     }
 
     @ExceptionHandler(NoHandlerFoundException.class)
-    public CommonResult<?> noHandlerFoundExceptionHandler(HttpServletRequest req, NoHandlerFoundException ex) {
-        log.warn("[noHandlerFoundExceptionHandler]", ex);
+    public CommonResult<?> noHandlerFoundExceptionHandler(HttpServletRequest request, NoHandlerFoundException ex) {
+        String requestURI = request.getRequestURI();
+        log.warn("请求地址'{}',找不到匹配处理器]",requestURI,ex);
         return CommonResult.error(NOT_FOUND.getCode(), String.format("请求地址不存在:%s", ex.getRequestURL()));
     }
 

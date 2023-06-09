@@ -8,6 +8,7 @@ import com.greenjiao.coc.manager.AsyncManager;
 import com.greenjiao.coc.manager.factory.AsyncFactory;
 import com.greenjiao.coc.security.utils.SecurityUtils;
 import com.greenjiao.coc.utils.RedisUtils;
+import com.greenjiao.coc.utils.sys.MessageUtils;
 import org.apache.commons.lang3.ObjectUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -50,23 +51,21 @@ public class PasswordService {
         String password = authentication.getCredentials().toString();
         String username = authentication.getName();
         Object cacheObject = redisUtils.getCacheObject(getCacheKey(username));
-        Integer retryCount = null;
+        Integer retryCount;
         if (ObjectUtils.isEmpty(cacheObject)) {
             retryCount = 0;
         } else {
             retryCount = (Integer) cacheObject;
         }
         if (retryCount >= maxRetryCount) {
-            String message = "密码输入错误" + maxRetryCount + "次，帐户锁定" + lockTime + "分钟";
-            System.out.println("输出了" + message);
+            String message = MessageUtils.message("user.password.retry.limit.exceed", maxRetryCount, lockTime);
             AsyncManager.me().execute(AsyncFactory.recordLogininfor(username, CommonConstant.LOGIN_FAIL, message));
             redisUtils.setCacheObject(getCacheKey(username), String.valueOf(retryCount), lockTime, TimeUnit.MINUTES);
             throw new ServiceException(HttpStatus.UNAUTHORIZED.value(), message);
         }
         if (!matches(user, password)) {
             retryCount = retryCount + 1;
-            String message = "密码输入错误 " + retryCount + " 次";
-            System.out.println("输出了" + message);
+            String message = MessageUtils.message("user.password.retry.limit.count", retryCount);
             AsyncManager.me().execute(AsyncFactory.recordLogininfor(username, CommonConstant.LOGIN_FAIL, message));
             redisUtils.setCacheObject(getCacheKey(username), retryCount, lockTime, TimeUnit.MINUTES);
             throw new ServiceException(HttpStatus.UNAUTHORIZED.value(), message);

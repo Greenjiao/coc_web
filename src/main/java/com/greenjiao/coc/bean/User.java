@@ -26,6 +26,9 @@ import java.time.LocalDateTime;
 @Data
 @TableName("`tb_user`")
 public class User {
+    public User(){
+
+    }
 
     /**
      * 主键
