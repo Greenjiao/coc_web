@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.greenjiao.coc.mapper.UserMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="com.greenjiao.coc.bean.User">
+        <id column="id" property="id" />
+        <result column="account" property="account" />
+        <result column="password" property="password" />
+        <result column="name" property="name" />
+        <result column="gender" property="gender" />
+        <result column="telephone" property="telephone" />
+        <result column="email" property="email" />
+        <result column="signature" property="signature" />
+        <result column="avatar_address" property="avatarAddress" />
+        <result column="permission" property="permission" />
+        <result column="banned" property="banned" />
+        <result column="remark" property="remark" />
+        <result column="create_time" property="createTime" />
+        <result column="delete_time" property="deleteTime" />
+        <result column="is_deleted" property="isDeleted" />
+    </resultMap>
+
+    <!-- 通用查询结果列 -->
+    <sql id="Base_Column_List">
+        `id`, 
+		`account`, `password`, `name`, `gender`, 
+		`telephone`, `email`, `signature`, `avatar_address`, 
+		`permission`, `banned`, `remark`, `create_time`, 
+		`delete_time`, `is_deleted`
+    </sql>
+
+    <sql id="Join_Column_List">
+        ${table}`id`, 
+		${table}`account`, ${table}`password`, ${table}`name`, ${table}`gender`, 
+		${table}`telephone`, ${table}`email`, ${table}`signature`, ${table}`avatar_address`, 
+		${table}`permission`, ${table}`banned`, ${table}`remark`, ${table}`create_time`, 
+		${table}`delete_time`, ${table}`is_deleted`
+    </sql>
+    <sql id="Batch_Insert_Column_List">
+        #{item.id},
+		#{item.account},#{item.password},#{item.name},#{item.gender},
+		#{item.telephone},#{item.email},#{item.signature},#{item.avatarAddress},
+		#{item.permission},#{item.banned},#{item.remark},#{item.createTime},
+		#{item.deleteTime},#{item.isDeleted}
+    </sql>
+</mapper>
+
