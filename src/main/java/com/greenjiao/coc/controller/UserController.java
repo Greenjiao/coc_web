@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 /**
  * <p>
- *  前端控制器
+ * 前端控制器
  * </p>
  *
  * @author yan
@@ -23,8 +23,9 @@ import org.springframework.web.bind.annotation.RestController;
 public class UserController {
     @Autowired
     private UserService userService;
+
     @PostMapping("/login")
-    public CommonResult<LoginUser> login(@RequestBody User user){
+    public CommonResult<LoginUser> login(@RequestBody User user) {
         return userService.login(user);
     }
 }

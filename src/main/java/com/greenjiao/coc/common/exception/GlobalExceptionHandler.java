@@ -4,7 +4,6 @@ import com.greenjiao.coc.common.bean.CommonResult;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.ConstraintViolation;
 import jakarta.validation.ConstraintViolationException;
-import jakarta.validation.ValidationException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.validation.BindException;
 import org.springframework.validation.FieldError;
@@ -33,7 +32,7 @@ public class GlobalExceptionHandler {
      * 因为 Filter 不走 SpringMVC 的流程，但是我们又需要兜底处理异常，所以这里提供一个全量的异常处理过程，保持逻辑统一。
      *
      * @param request 请求
-     * @param ex 异常
+     * @param ex      异常
      * @return 通用返回
      */
     public CommonResult<?> allExceptionHandler(HttpServletRequest request, Throwable ex) {
@@ -60,6 +59,7 @@ public class GlobalExceptionHandler {
         }
         return defaultExceptionHandler(request, (Exception) ex);
     }
+
     /**
      * 权限校验异常
      */
@@ -69,9 +69,10 @@ public class GlobalExceptionHandler {
         log.error("请求地址'{}',权限校验失败'{}'", requestURI, e.getMessage());
         return CommonResult.error(FORBIDDEN);
     }
+
     /**
      * 处理 SpringMVC 请求参数缺失
-     *
+     * <p>
      * 例如说，接口上设置了 @RequestParam("xx") 参数，结果并未传递 xx 参数
      */
     @ExceptionHandler(value = MissingServletRequestParameterException.class)
@@ -79,9 +80,10 @@ public class GlobalExceptionHandler {
         log.warn("[missingServletRequestParameterExceptionHandler]", ex);
         return CommonResult.error(BAD_REQUEST.getCode(), String.format("请求参数缺失:%s", ex.getParameterName()));
     }
+
     /**
      * 处理 SpringMVC 请求参数类型错误
-     *
+     * <p>
      * 例如说，接口上设置了 @RequestParam("xx") 参数为 Integer，结果传递 xx 参数类型为 String
      */
     @ExceptionHandler(MethodArgumentTypeMismatchException.class)
@@ -89,6 +91,7 @@ public class GlobalExceptionHandler {
         log.warn("[missingServletRequestParameterExceptionHandler]", ex);
         return CommonResult.error(BAD_REQUEST.getCode(), String.format("请求参数类型错误:%s", ex.getMessage()));
     }
+
     /**
      * 处理 SpringMVC 参数校验不正确
      */
@@ -110,6 +113,7 @@ public class GlobalExceptionHandler {
         assert fieldError != null; // 断言，避免告警
         return CommonResult.error(BAD_REQUEST.getCode(), String.format("请求参数不正确:%s", fieldError.getDefaultMessage()));
     }
+
     /**
      * 处理 Validator 校验不通过产生的异常
      */
@@ -124,10 +128,10 @@ public class GlobalExceptionHandler {
      * 请求方式不支持
      */
     @ExceptionHandler(HttpRequestMethodNotSupportedException.class)
-    public CommonResult<?> handleHttpRequestMethodNotSupported(HttpRequestMethodNotSupportedException e,HttpServletRequest request) {
+    public CommonResult<?> handleHttpRequestMethodNotSupported(HttpRequestMethodNotSupportedException e, HttpServletRequest request) {
         String requestURI = request.getRequestURI();
         log.error("请求地址'{}',不支持'{}'请求", requestURI, e.getMethod());
-        return CommonResult.error(METHOD_NOT_ALLOWED.getCode(),String.format("请求方法不正确:%s", e.getMessage()));
+        return CommonResult.error(METHOD_NOT_ALLOWED.getCode(), String.format("请求方法不正确:%s", e.getMessage()));
     }
 
     @ExceptionHandler(NoHandlerFoundException.class)
@@ -141,7 +145,7 @@ public class GlobalExceptionHandler {
      */
     @ExceptionHandler(ServiceException.class)
     public CommonResult<?> serviceExceptionHandler(ServiceException e) {
-        log.error("发生业务异常",e);
+        log.error("发生业务异常", e);
         return CommonResult.error(e.getCode(), e.getMessage());
     }
 
@@ -149,7 +153,7 @@ public class GlobalExceptionHandler {
      * 系统异常
      */
     @ExceptionHandler(Exception.class)
-    public CommonResult<?> defaultExceptionHandler(HttpServletRequest request,Exception e) {
+    public CommonResult<?> defaultExceptionHandler(HttpServletRequest request, Exception e) {
         String requestURI = request.getRequestURI();
         log.error("请求地址'{}',发生系统异常.", requestURI, e);
         return CommonResult.error(INTERNAL_SERVER_ERROR);

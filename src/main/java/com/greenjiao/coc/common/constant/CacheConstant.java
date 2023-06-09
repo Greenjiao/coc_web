@@ -19,6 +19,6 @@ public class CacheConstant {
      * 登录账户密码错误次数 redis key
      */
     public static final String PWD_ERR_CNT_KEY = "sys_coc:pwd_err_cnt:";
-//    public static final String redisTokenTable="sys_coc:token";
-    public static final String TOKEN_BLACK_KEY="sys_coc:token_blacklist";
+    //    public static final String redisTokenTable="sys_coc:token";
+    public static final String TOKEN_BLACK_KEY = "sys_coc:token_blacklist";
 }

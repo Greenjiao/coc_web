@@ -5,6 +5,7 @@ package com.greenjiao.coc.service.sys;
  * @Date 2023/06/05 20:01
  * @Version 1.0
  */
+
 import com.greenjiao.coc.bean.sys.SysLogininfor;
 
 import java.util.List;
@@ -14,8 +15,7 @@ import java.util.List;
  *
  * @author ruoyi
  */
-public interface ISysLogininforService
-{
+public interface ISysLogininforService {
     /**
      * 新增系统登录日志
      *

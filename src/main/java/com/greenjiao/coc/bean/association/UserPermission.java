@@ -7,7 +7,7 @@ import lombok.Data;
 
 /**
  * <p>
- * 
+ *
  * </p>
  *
  * @author yan

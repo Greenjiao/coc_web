@@ -7,7 +7,6 @@ package com.greenjiao.coc.service.sys.impl;
  */
 
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
-import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.greenjiao.coc.bean.sys.SysLogininfor;
 import com.greenjiao.coc.service.sys.ISysLogininforService;
 import com.greenjiao.coc.service.sys.mapper.SysLogininforMapper;
@@ -23,8 +22,7 @@ import java.util.List;
  * @author ruoyi
  */
 @Service
-public class SysLogininforServiceImpl implements ISysLogininforService
-{
+public class SysLogininforServiceImpl implements ISysLogininforService {
 
     @Autowired
     private SysLogininforMapper logininforMapper;
@@ -35,8 +33,7 @@ public class SysLogininforServiceImpl implements ISysLogininforService
      * @param logininfor 访问日志对象
      */
     @Override
-    public void insertLogininfor(SysLogininfor logininfor)
-    {
+    public void insertLogininfor(SysLogininfor logininfor) {
         logininforMapper.insert(logininfor);
 //        logininforMapper.insertLogininfor(logininfor);
     }
@@ -48,28 +45,27 @@ public class SysLogininforServiceImpl implements ISysLogininforService
      * @return 登录记录集合
      */
     @Override
-    public List<SysLogininfor> selectLogininforList(SysLogininfor logininfor)
-    {
+    public List<SysLogininfor> selectLogininforList(SysLogininfor logininfor) {
         LambdaQueryWrapper<SysLogininfor> wrapper = new LambdaQueryWrapper<>();
         wrapper.select(
-                SysLogininfor::getInfoId,
-                SysLogininfor::getOs,
-                SysLogininfor::getBrowser,
-                SysLogininfor::getMsg,
-                SysLogininfor::getIpaddr,
-                SysLogininfor::getStatus,
-                SysLogininfor::getLoginLocation,
-                SysLogininfor::getLoginTime,
-                SysLogininfor::getUserName)
-                .eq(logininfor.getInfoId()!=null,SysLogininfor::getInfoId,logininfor.getInfoId())
-                .eq(logininfor.getOs()!=null,SysLogininfor::getOs,logininfor.getOs())
-                .eq(logininfor.getMsg()!=null,SysLogininfor::getMsg,logininfor.getMsg())
-                .eq(logininfor.getLoginLocation()!=null,SysLogininfor::getLoginLocation,logininfor.getLoginLocation())
-                .eq(logininfor.getLoginTime()!=null,SysLogininfor::getLoginTime,logininfor.getLoginTime())
-                .eq(logininfor.getBrowser()!=null,SysLogininfor::getBrowser,logininfor.getBrowser())
-                .eq(logininfor.getIpaddr()!=null,SysLogininfor::getIpaddr,logininfor.getIpaddr())
-                .eq(logininfor.getStatus()!=null,SysLogininfor::getStatus,logininfor.getStatus())
-                .eq(logininfor.getUserName()!=null,SysLogininfor::getUserName,logininfor.getUserName());
+                        SysLogininfor::getInfoId,
+                        SysLogininfor::getOs,
+                        SysLogininfor::getBrowser,
+                        SysLogininfor::getMsg,
+                        SysLogininfor::getIpaddr,
+                        SysLogininfor::getStatus,
+                        SysLogininfor::getLoginLocation,
+                        SysLogininfor::getLoginTime,
+                        SysLogininfor::getUserName)
+                .eq(logininfor.getInfoId() != null, SysLogininfor::getInfoId, logininfor.getInfoId())
+                .eq(logininfor.getOs() != null, SysLogininfor::getOs, logininfor.getOs())
+                .eq(logininfor.getMsg() != null, SysLogininfor::getMsg, logininfor.getMsg())
+                .eq(logininfor.getLoginLocation() != null, SysLogininfor::getLoginLocation, logininfor.getLoginLocation())
+                .eq(logininfor.getLoginTime() != null, SysLogininfor::getLoginTime, logininfor.getLoginTime())
+                .eq(logininfor.getBrowser() != null, SysLogininfor::getBrowser, logininfor.getBrowser())
+                .eq(logininfor.getIpaddr() != null, SysLogininfor::getIpaddr, logininfor.getIpaddr())
+                .eq(logininfor.getStatus() != null, SysLogininfor::getStatus, logininfor.getStatus())
+                .eq(logininfor.getUserName() != null, SysLogininfor::getUserName, logininfor.getUserName());
         return logininforMapper.selectList(wrapper);
 //        return logininforMapper.selectLogininforList(logininfor);
     }
@@ -81,8 +77,7 @@ public class SysLogininforServiceImpl implements ISysLogininforService
      * @return 结果
      */
     @Override
-    public int deleteLogininforByIds(Long[] infoIds)
-    {
+    public int deleteLogininforByIds(Long[] infoIds) {
         return logininforMapper.deleteBatchIds(Arrays.asList(infoIds));
 //        return logininforMapper.deleteLogininforByIds(infoIds);
     }
@@ -91,8 +86,7 @@ public class SysLogininforServiceImpl implements ISysLogininforService
      * 清空系统登录日志
      */
     @Override
-    public void cleanLogininfor()
-    {
+    public void cleanLogininfor() {
         logininforMapper.cleanLogininfor();
     }
 }

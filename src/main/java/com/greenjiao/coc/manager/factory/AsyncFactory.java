@@ -28,21 +28,18 @@ public class AsyncFactory {
      * 记录登录信息
      *
      * @param username 用户名
-     * @param status 状态
-     * @param message 消息
-     * @param args 列表
+     * @param status   状态
+     * @param message  消息
+     * @param args     列表
      * @return 任务task
      */
     public static TimerTask recordLogininfor(final String username, final String status, final String message,
-                                             final Object... args)
-    {
+                                             final Object... args) {
         final UserAgent userAgent = UserAgent.parseUserAgentString(ServletUtils.getRequest().getHeader("User-Agent"));
         final String ip = IpUtils.getIpAddr();
-        return new TimerTask()
-        {
+        return new TimerTask() {
             @Override
-            public void run()
-            {
+            public void run() {
                 String address = AddressUtils.getRealAddressByIP(ip);
                 StringBuilder s = new StringBuilder();
                 s.append(LogUtils.getBlock(ip));
@@ -67,12 +64,9 @@ public class AsyncFactory {
                 LocalDateTime nowLocalDateTime = CocUtils.getNowLocalDateTime();
                 logininfor.setLoginTime(nowLocalDateTime);
                 // 日志状态
-                if (StringUtils.equalsAny(status, CommonConstant.LOGIN_SUCCESS, CommonConstant.LOGOUT, CommonConstant.REGISTER))
-                {
+                if (StringUtils.equalsAny(status, CommonConstant.LOGIN_SUCCESS, CommonConstant.LOGOUT, CommonConstant.REGISTER)) {
                     logininfor.setStatus(CommonConstant.SUCCESS);
-                }
-                else if (CommonConstant.LOGIN_FAIL.equals(status))
-                {
+                } else if (CommonConstant.LOGIN_FAIL.equals(status)) {
                     logininfor.setStatus(CommonConstant.FAIL);
                 }
                 // 插入数据
@@ -87,13 +81,10 @@ public class AsyncFactory {
      * @param operLog 操作日志信息
      * @return 任务task
      */
-    public static TimerTask recordOper(final SysOperLog operLog)
-    {
-        return new TimerTask()
-        {
+    public static TimerTask recordOper(final SysOperLog operLog) {
+        return new TimerTask() {
             @Override
-            public void run()
-            {
+            public void run() {
                 // 远程查询操作地点
                 operLog.setOperLocation(AddressUtils.getRealAddressByIP(operLog.getOperIp()));
                 SpringUtils.getBean(ISysOperLogService.class).insertOperlog(operLog);

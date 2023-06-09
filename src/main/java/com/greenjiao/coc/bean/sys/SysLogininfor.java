@@ -6,11 +6,11 @@ package com.greenjiao.coc.bean.sys;
  * @Version 1.0
  */
 
+import com.baomidou.mybatisplus.annotation.TableName;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.Data;
 
 import java.time.LocalDateTime;
-import java.util.Date;
 
 /**
  * 系统访问记录表 sys_logininfor
@@ -18,6 +18,7 @@ import java.util.Date;
  * @author ruoyi
  */
 @Data
+@TableName("`sys_logininfor`")
 public class SysLogininfor {
     private static final long serialVersionUID = 1L;
 

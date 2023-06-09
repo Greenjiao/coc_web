@@ -13,11 +13,10 @@ import lombok.NoArgsConstructor;
 @EqualsAndHashCode(callSuper = true)
 @Data
 @NoArgsConstructor
-public class ServiceException extends RuntimeException{
+public class ServiceException extends RuntimeException {
 
     /**
      * 错误码
-     *
      */
     private Integer code;
     /**

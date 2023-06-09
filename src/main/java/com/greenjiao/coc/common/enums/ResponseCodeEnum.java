@@ -28,6 +28,7 @@ public interface ResponseCodeEnum {
     Response DEMO_DENY = new Response(901, "演示模式，禁止写操作");
 
     Response UNKNOWN = new Response(999, "未知错误");
+
     /**
      * 是否为服务端错误，参考 HTTP 5XX 错误码段
      *

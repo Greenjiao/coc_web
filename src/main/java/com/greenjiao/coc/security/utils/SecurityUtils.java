@@ -21,13 +21,14 @@ import java.util.Collections;
 public class SecurityUtils {
     public static final String AUTHORIZATION_BEARER = "Bearer";
 
-    private SecurityUtils() {}
+    private SecurityUtils() {
+    }
 
     /**
      * 从请求中，获得认证 Token
      *
      * @param request 请求
-     * @param header 认证 Token 对应的 Header 名字
+     * @param header  认证 Token 对应的 Header 名字
      * @return 认证 Token
      */
     public static String obtainAuthorization(HttpServletRequest request, String header) {
@@ -84,7 +85,7 @@ public class SecurityUtils {
      * 设置当前用户
      *
      * @param loginUser 登录用户
-     * @param request 请求
+     * @param request   请求
      */
     public static void setLoginUser(LoginUser loginUser, HttpServletRequest request) {
         // 创建 Authentication，并设置到上下文
@@ -99,15 +100,15 @@ public class SecurityUtils {
         authenticationToken.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
         return authenticationToken;
     }
+
     /**
      * 判断密码是否相同
      *
-     * @param rawPassword 真实密码
+     * @param rawPassword     真实密码
      * @param encodedPassword 加密后字符
      * @return 结果
      */
-    public static boolean matchesPassword(String rawPassword, String encodedPassword)
-    {
+    public static boolean matchesPassword(String rawPassword, String encodedPassword) {
         BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
         return passwordEncoder.matches(rawPassword, encodedPassword);
     }

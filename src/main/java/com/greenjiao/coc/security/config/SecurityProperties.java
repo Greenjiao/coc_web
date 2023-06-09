@@ -15,16 +15,16 @@ import java.util.List;
  */
 @Data
 @Validated
-@ConfigurationProperties(prefix="coc.security")
+@ConfigurationProperties(prefix = "coc.security")
 public class SecurityProperties {
     /**
      * HTTP 请求时，访问令牌的请求 Header
      */
     @NotEmpty(message = "Token Header 不能为空")
     private String tokenHeader = "Authorization";
-    private String bearerPrefix="Bearer ";
-    private String tokenIssuer="greenjiao.coc.yan";
-    private String tokenAudience="greenjiao.coc.app";
+    private String bearerPrefix = "Bearer ";
+    private String tokenIssuer = "greenjiao.coc.yan";
+    private String tokenAudience = "greenjiao.coc.app";
     /**
      * 免登录的 URL 列表
      */

@@ -16,8 +16,7 @@ import java.util.List;
  *
  * @author ruoyi
  */
-public interface ISysOperLogService
-{
+public interface ISysOperLogService {
     /**
      * 新增操作日志
      *

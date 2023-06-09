@@ -43,6 +43,7 @@ public class LoginUser implements UserDetails {
      */
     private String token;
     private List<String> permissions;
+
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         return null;

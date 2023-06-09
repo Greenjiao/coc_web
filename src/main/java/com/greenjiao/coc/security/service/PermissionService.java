@@ -21,7 +21,7 @@ public class PermissionService {
         this.permissionMapper = permissionMapper;
     }
 
-    public List<String> selectPermissionByUserId(String userId){
+    public List<String> selectPermissionByUserId(String userId) {
         MPJLambdaWrapper<Permission> wrapper = new MPJLambdaWrapper<Permission>()
                 .select(Permission::getName)
                 .leftJoin(UserPermission.class, UserPermission::getPermissionId, Permission::getId)

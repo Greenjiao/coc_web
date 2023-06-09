@@ -4,24 +4,32 @@
 
     <!-- 通用查询映射结果 -->
     <resultMap id="BaseResultMap" type="com.greenjiao.coc.bean.Permission">
-        <id column="id" property="id" />
-        <result column="weight" property="weight" />
-        <result column="name" property="name" />
+        <id column="id" property="id"/>
+        <result column="weight" property="weight"/>
+        <result column="name" property="name"/>
     </resultMap>
 
     <!-- 通用查询结果列 -->
     <sql id="Base_Column_List">
-        `id`, 
+        `id`
+        ,
 		`weight`, `name`
     </sql>
 
     <sql id="Join_Column_List">
-        ${table}`id`, 
-		${table}`weight`, ${table}`name`
+        ${table}
+        `id`
+        ,
+        ${table}
+        `weight`,
+        ${table}
+        `name`
     </sql>
     <sql id="Batch_Insert_Column_List">
-        #{item.id},
-		#{item.weight},#{item.name}
+        #{item.id}
+        ,
+        #{item.weight},
+        #{item.name}
     </sql>
 </mapper>
 

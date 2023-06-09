@@ -13,10 +13,9 @@ import lombok.NoArgsConstructor;
 @EqualsAndHashCode(callSuper = true)
 @Data
 @NoArgsConstructor
-public class ServerException extends RuntimeException  {
+public class ServerException extends RuntimeException {
     /**
      * 错误码
-     *
      */
     private Integer code;
     /**

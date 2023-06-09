@@ -23,6 +23,7 @@ import java.util.Objects;
 @Component
 public class LogAspect {
     ThreadLocal<Long> startTime = new ThreadLocal<>();
+
     @Pointcut(value = "execution(* com.greenjiao.coc.service.impl..*(..))")
     public void servicePoint() {
     }

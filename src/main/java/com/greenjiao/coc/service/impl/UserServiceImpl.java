@@ -18,7 +18,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 /**
  * <p>
- *  服务实现类
+ * 服务实现类
  * </p>
  *
  * @author yan
@@ -42,23 +42,23 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public CommonResult<LoginUser> login(User user) {
-        Authentication authentication=null;
+        Authentication authentication = null;
         try {
             UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(user.getAccount(), user.getPassword());
             SecurityContextHolder.getContext().setAuthentication(authenticationToken);
             authentication = authenticationManager.authenticate(authenticationToken);
-        } catch (InternalAuthenticationServiceException e){
+        } catch (InternalAuthenticationServiceException e) {
             Throwable cause = e.getCause();
-            if(cause instanceof ServiceException){
+            if (cause instanceof ServiceException) {
                 throw (ServiceException) cause;
             }
         } finally {
             SecurityContextHolder.clearContext();
         }
-        LoginUser loginUser = (LoginUser)authentication.getPrincipal();
+        LoginUser loginUser = (LoginUser) authentication.getPrincipal();
         loginUser.setUser(loginUser.getUser().setPassword(null));
 
-        return CommonResult.success(loginUser,"登陆成功");
+        return CommonResult.success(loginUser, "登陆成功");
     }
 
     @Override

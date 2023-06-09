@@ -24,8 +24,7 @@ import java.util.concurrent.TimeUnit;
  * @Version 1.0
  */
 @Component
-public class PasswordService
-{
+public class PasswordService {
     @Autowired
     private RedisUtils redisUtils;
 
@@ -42,55 +41,46 @@ public class PasswordService
      * @param username 用户名
      * @return 缓存键key
      */
-    private String getCacheKey(String username)
-    {
+    private String getCacheKey(String username) {
         return CacheConstant.PWD_ERR_CNT_KEY + username;
     }
 
-    public void validate(User user)
-    {
+    public void validate(User user) {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        String password=authentication.getCredentials().toString();
+        String password = authentication.getCredentials().toString();
         String username = authentication.getName();
         Object cacheObject = redisUtils.getCacheObject(getCacheKey(username));
         Integer retryCount = null;
-        if(ObjectUtils.isEmpty(cacheObject)){
+        if (ObjectUtils.isEmpty(cacheObject)) {
             retryCount = 0;
-        }else {
+        } else {
             retryCount = (Integer) cacheObject;
         }
-        if (retryCount >= maxRetryCount)
-        {
-            String message="密码输入错误"+ maxRetryCount +"次，帐户锁定"+lockTime+"分钟";
-            System.out.println("输出了"+message);
+        if (retryCount >= maxRetryCount) {
+            String message = "密码输入错误" + maxRetryCount + "次，帐户锁定" + lockTime + "分钟";
+            System.out.println("输出了" + message);
             AsyncManager.me().execute(AsyncFactory.recordLogininfor(username, CommonConstant.LOGIN_FAIL, message));
             redisUtils.setCacheObject(getCacheKey(username), String.valueOf(retryCount), lockTime, TimeUnit.MINUTES);
             throw new ServiceException(HttpStatus.UNAUTHORIZED.value(), message);
         }
-        if (!matches(user, password))
-        {
+        if (!matches(user, password)) {
             retryCount = retryCount + 1;
-            String message="密码输入错误 "+retryCount+" 次";
-            System.out.println("输出了"+message);
-            AsyncManager.me().execute(AsyncFactory.recordLogininfor(username, CommonConstant.LOGIN_FAIL,message));
+            String message = "密码输入错误 " + retryCount + " 次";
+            System.out.println("输出了" + message);
+            AsyncManager.me().execute(AsyncFactory.recordLogininfor(username, CommonConstant.LOGIN_FAIL, message));
             redisUtils.setCacheObject(getCacheKey(username), retryCount, lockTime, TimeUnit.MINUTES);
             throw new ServiceException(HttpStatus.UNAUTHORIZED.value(), message);
-        }
-        else
-        {
+        } else {
             clearLoginRecordCache(username);
         }
     }
 
-    public boolean matches(User user, String rawPassword)
-    {
+    public boolean matches(User user, String rawPassword) {
         return SecurityUtils.matchesPassword(rawPassword, user.getPassword());
     }
 
-    public void clearLoginRecordCache(String loginName)
-    {
-        if (redisUtils.hasKey(getCacheKey(loginName)))
-        {
+    public void clearLoginRecordCache(String loginName) {
+        if (redisUtils.hasKey(getCacheKey(loginName))) {
             redisUtils.deleteObject(getCacheKey(loginName));
         }
     }

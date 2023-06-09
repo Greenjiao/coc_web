@@ -14,7 +14,6 @@ import org.springframework.web.context.support.WebApplicationContextUtils;
 
 import java.time.LocalDateTime;
 import java.time.ZoneId;
-import java.time.ZoneOffset;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
@@ -41,7 +40,7 @@ public class JwtUtils {
 
     protected static final long MILLIS_MINUTE = 60 * MILLIS_SECOND;
     private static final Long MILLIS_MINUTE_TEN = 20 * 60 * 1000L;
-    private static final int TOKEN_EXPIRE_TIME=  30;
+    private static final int TOKEN_EXPIRE_TIME = 30;
     /**
      * 加密密钥
      */
@@ -134,12 +133,14 @@ public class JwtUtils {
     public boolean isTokenInBlacklist(String token) {
         return redisUtils.sHasKey(CacheConstant.TOKEN_BLACK_KEY, token);
     }
+
     /**
      * 3、解析token字符串中的权限信息
+     *
      * @param token
      * @return
      */
-    private Claims extractAllClaims(String token){
+    private Claims extractAllClaims(String token) {
         return Jwts
                 .parserBuilder()
                 // 获取alg开头的信息
@@ -149,15 +150,18 @@ public class JwtUtils {
                 .parseClaimsJws(token)
                 .getBody();
     }
+
     public String getToken(HttpServletRequest request) {
         String authHeader = request.getHeader(securityProperties.getTokenHeader());
         return authHeader.substring(securityProperties.getBearerPrefix().length());
     }
+
     public String getUserId(String token) {
         Claims body = Jwts.parserBuilder().setSigningKey(KEY).build().parseClaimsJws(token).getBody();
         return body.getSubject();
     }
-    public String getTokenKey(String userId){
+
+    public String getTokenKey(String userId) {
         return CacheConstant.LOGIN_TOKEN_KEY + userId;
     }
 
@@ -167,13 +171,11 @@ public class JwtUtils {
      * @param loginUser
      * @return 令牌
      */
-    public void verifyToken(LoginUser loginUser)
-    {
+    public void verifyToken(LoginUser loginUser) {
         LocalDateTime expireLocalDateTime = loginUser.getExpireTime();
         long expireTime = expireLocalDateTime.atZone(ZoneId.systemDefault()).toInstant().toEpochMilli();
         long currentTime = System.currentTimeMillis();
-        if (expireTime - currentTime <= MILLIS_MINUTE_TEN)
-        {
+        if (expireTime - currentTime <= MILLIS_MINUTE_TEN) {
             refreshToken(loginUser);
         }
     }
@@ -183,8 +185,7 @@ public class JwtUtils {
      *
      * @param loginUser 登录信息
      */
-    public void refreshToken(LoginUser loginUser)
-    {
+    public void refreshToken(LoginUser loginUser) {
         LocalDateTime nowLocalDateTime = CocUtils.getNowLocalDateTime();
         LocalDateTime expireLocalDateTime = nowLocalDateTime.plusMinutes(TOKEN_EXPIRE_TIME);
         loginUser.setLoginTime(nowLocalDateTime);
