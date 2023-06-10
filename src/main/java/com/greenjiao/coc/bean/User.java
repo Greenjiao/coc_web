@@ -26,7 +26,7 @@ import java.time.LocalDateTime;
 @Data
 @TableName("`tb_user`")
 public class User {
-    public User(){
+    public User() {
 
     }
 
@@ -83,12 +83,6 @@ public class User {
      */
     @TableField("`avatar_address`")
     private String avatarAddress;
-
-    /**
-     * 权限
-     */
-    @TableField("`permission`")
-    private String permission;
 
     /**
      * 是否被封禁

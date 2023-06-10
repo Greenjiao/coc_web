@@ -1,6 +1,7 @@
 package com.greenjiao.coc;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import com.baomidou.mybatisplus.core.toolkit.IdWorker;
 import com.greenjiao.coc.bean.User;
 import com.greenjiao.coc.mapper.UserMapper;
 import org.junit.jupiter.api.Test;
@@ -23,6 +24,12 @@ class CocApplicationTests {
         select.select("id");
         List<User> users = userMapper.selectList(select);
         System.out.println(users);
+    }
+    @Test
+    void mybatisTest(){
+        User user = new User().setAccount("name");
+        String idStr = IdWorker.getIdStr(user);
+        System.out.println(idStr);
     }
 
 }

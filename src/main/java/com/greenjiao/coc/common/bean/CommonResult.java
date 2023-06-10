@@ -2,7 +2,7 @@ package com.greenjiao.coc.common.bean;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.greenjiao.coc.common.enums.Response;
-import com.greenjiao.coc.common.enums.ResponseCodeEnum;
+import com.greenjiao.coc.common.enums.ResponseEnum;
 import com.greenjiao.coc.common.exception.ServerException;
 import com.greenjiao.coc.common.exception.ServiceException;
 import lombok.Data;
@@ -46,7 +46,7 @@ public class CommonResult<T> implements Serializable {
     }
 
     public static <T> CommonResult<T> error(Integer code, String message) {
-        Assert.isTrue(!ResponseCodeEnum.SUCCESS.getCode().equals(code), "code 必须是错误的！");
+        Assert.isTrue(!ResponseEnum.SUCCESS.getCode().equals(code), "code 必须是错误的！");
         CommonResult<T> result = new CommonResult<>();
         result.code = code;
         result.msg = message;
@@ -63,7 +63,7 @@ public class CommonResult<T> implements Serializable {
 
     public static <T> CommonResult<T> success(T data) {
         CommonResult<T> result = new CommonResult<>();
-        result.code = ResponseCodeEnum.SUCCESS.getCode();
+        result.code = ResponseEnum.SUCCESS.getCode();
         result.data = data;
         result.msg = "";
         return result;
@@ -71,14 +71,14 @@ public class CommonResult<T> implements Serializable {
 
     public static <T> CommonResult<T> success(T data, String msg) {
         CommonResult<T> result = new CommonResult<>();
-        result.code = ResponseCodeEnum.SUCCESS.getCode();
+        result.code = ResponseEnum.SUCCESS.getCode();
         result.data = data;
         result.msg = msg;
         return result;
     }
 
     public static boolean isSuccess(Integer code) {
-        return Objects.equals(code, ResponseCodeEnum.SUCCESS.getCode());
+        return Objects.equals(code, ResponseEnum.SUCCESS.getCode());
     }
 
     @JsonIgnore // 避免 jackson 序列化
@@ -101,7 +101,7 @@ public class CommonResult<T> implements Serializable {
             return;
         }
         // 服务端异常
-        if (ResponseCodeEnum.isServerErrorCode(code)) {
+        if (ResponseEnum.isServerErrorCode(code)) {
             throw new ServerException(code, msg);
         }
         // 业务异常

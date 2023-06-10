@@ -10,7 +10,6 @@ import com.greenjiao.coc.security.utils.SecurityUtils;
 import com.greenjiao.coc.utils.RedisUtils;
 import com.greenjiao.coc.utils.sys.MessageUtils;
 import org.apache.commons.lang3.ObjectUtils;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.core.Authentication;
@@ -26,14 +25,17 @@ import java.util.concurrent.TimeUnit;
  */
 @Component
 public class PasswordService {
-    @Autowired
-    private RedisUtils redisUtils;
+    private final RedisUtils redisUtils;
 
     @Value(value = "${user.password.maxRetryCount}")
     private int maxRetryCount;
 
     @Value(value = "${user.password.lockTime}")
     private int lockTime;
+
+    public PasswordService(RedisUtils redisUtils) {
+        this.redisUtils = redisUtils;
+    }
 
 
     /**
@@ -50,17 +52,14 @@ public class PasswordService {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         String password = authentication.getCredentials().toString();
         String username = authentication.getName();
-        Object cacheObject = redisUtils.getCacheObject(getCacheKey(username));
-        Integer retryCount;
-        if (ObjectUtils.isEmpty(cacheObject)) {
+        Integer retryCount = redisUtils.getCacheObject(getCacheKey(username));
+        if (ObjectUtils.isEmpty(retryCount)) {
             retryCount = 0;
-        } else {
-            retryCount = (Integer) cacheObject;
         }
         if (retryCount >= maxRetryCount) {
             String message = MessageUtils.message("user.password.retry.limit.exceed", maxRetryCount, lockTime);
             AsyncManager.me().execute(AsyncFactory.recordLogininfor(username, CommonConstant.LOGIN_FAIL, message));
-            redisUtils.setCacheObject(getCacheKey(username), String.valueOf(retryCount), lockTime, TimeUnit.MINUTES);
+            redisUtils.setCacheObject(getCacheKey(username), retryCount, lockTime, TimeUnit.MINUTES);
             throw new ServiceException(HttpStatus.UNAUTHORIZED.value(), message);
         }
         if (!matches(user, password)) {

@@ -17,7 +17,7 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 import org.springframework.web.method.annotation.MethodArgumentTypeMismatchException;
 import org.springframework.web.servlet.NoHandlerFoundException;
 
-import static com.greenjiao.coc.common.enums.ResponseCodeEnum.*;
+import static com.greenjiao.coc.common.enums.ResponseEnum.*;
 
 /**
  * @Author Yan
@@ -54,8 +54,8 @@ public class GlobalExceptionHandler {
         if (ex instanceof NoHandlerFoundException) {
             return noHandlerFoundExceptionHandler(request, (NoHandlerFoundException) ex);
         }
-        if (ex instanceof AccessDeniedException){
-            return handleAccessDeniedException( request,(AccessDeniedException) ex);
+        if (ex instanceof AccessDeniedException) {
+            return handleAccessDeniedException(request, (AccessDeniedException) ex);
         }
         if (ex instanceof ServiceException) {
             return serviceExceptionHandler((ServiceException) ex);
@@ -67,9 +67,9 @@ public class GlobalExceptionHandler {
      * 权限校验异常
      */
     @ExceptionHandler(AccessDeniedException.class)
-    public CommonResult<?> handleAccessDeniedException(HttpServletRequest request, AccessDeniedException e){
+    public CommonResult<?> handleAccessDeniedException(HttpServletRequest request, AccessDeniedException e) {
         String requestURI = request.getRequestURI();
-        log.error("请求地址'{}',用户{}权限不足,{}", requestURI, SecurityUtils.getLoginUserId(),e.getMessage());
+        log.error("请求地址'{}',用户{}权限不足,{}", requestURI, SecurityUtils.getLoginUserId(), e.getMessage());
         return CommonResult.error(FORBIDDEN);
     }
 
@@ -140,7 +140,7 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(NoHandlerFoundException.class)
     public CommonResult<?> noHandlerFoundExceptionHandler(HttpServletRequest request, NoHandlerFoundException ex) {
         String requestURI = request.getRequestURI();
-        log.warn("请求地址'{}',找不到匹配处理器]",requestURI,ex);
+        log.warn("请求地址'{}',找不到匹配处理器]", requestURI, ex);
         return CommonResult.error(NOT_FOUND.getCode(), String.format("请求地址不存在:%s", ex.getRequestURL()));
     }
 

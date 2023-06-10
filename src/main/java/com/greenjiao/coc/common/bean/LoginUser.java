@@ -23,11 +23,12 @@ import java.util.List;
  */
 @Data
 @AllArgsConstructor
-@JsonIgnoreProperties(value = {"enabled","password","username","accountNonExpired","accountNonLocked","credentialsNonExpired"})
+@JsonIgnoreProperties(value = {"enabled", "password", "username", "accountNonExpired", "accountNonLocked", "credentialsNonExpired"})
 public class LoginUser implements UserDetails {
-    public LoginUser(){
+    public LoginUser() {
 
     }
+
     private User user;
     /**
      * 过期时间

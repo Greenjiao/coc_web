@@ -4,6 +4,7 @@ import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
+import lombok.AllArgsConstructor;
 import lombok.Data;
 
 /**
@@ -15,6 +16,7 @@ import lombok.Data;
  * @since 2023-06-09
  */
 @Data
+@AllArgsConstructor
 @TableName("`dict_permission`")
 public class Permission {
 

@@ -63,9 +63,10 @@ public class SecurityConfig {
     public AuthenticationManager authenticationManager(AuthenticationConfiguration config) throws Exception {
         return config.getAuthenticationManager();
     }
+
     //   不要注册成Bean对象，会被Spring容器识别自动注册到SpringBoot的拦截器链中
     public JwtAuthenticationFilter authenticationJwtTokenFilter() {
-        return new JwtAuthenticationFilter(securityProperties, jwtUtils, redisUtils,globalExceptionHandler);
+        return new JwtAuthenticationFilter(securityProperties, jwtUtils, redisUtils, globalExceptionHandler);
     }
 
     @Bean
@@ -80,7 +81,7 @@ public class SecurityConfig {
                 .authenticationProvider(authenticationProvider())
                 .addFilterBefore(authenticationJwtTokenFilter(), UsernamePasswordAuthenticationFilter.class)
                 .authorizeHttpRequests()
-                .requestMatchers(HttpMethod.POST, "/coc/user/login").permitAll()
+                .requestMatchers(HttpMethod.POST, "/coc/user/login", "/coc/user/register").permitAll()
                 .anyRequest().authenticated();
         return httpSecurity.build();
     }

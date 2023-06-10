@@ -46,15 +46,15 @@ public class UserDetailsServiceImpl implements UserDetailsService {
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         QueryWrapper<User> userQueryWrapper = UserQuery.selectByAccountQuery(username, true);
         User user = userMapper.selectOne(userQueryWrapper);
+
         if (ObjectUtils.isEmpty(user)) {
-//            log.info("登录用户：{} 不存在.", username);
             String message = MessageUtils.message("user.account.not.exist", username);
             AsyncManager.me().execute(AsyncFactory.recordLogininfor(username, CommonConstant.LOGIN_FAIL, message));
             throw new ServiceException(HttpStatus.UNAUTHORIZED.value(), message);
         } else if (user.getBanned()) {
             String message = MessageUtils.message("user.blocked", username);
             AsyncManager.me().execute(AsyncFactory.recordLogininfor(username, CommonConstant.LOGIN_FAIL, message));
-            throw new ServiceException(HttpStatus.FORBIDDEN.value(),message);
+            throw new ServiceException(HttpStatus.FORBIDDEN.value(), message);
         }
 
         passwordService.validate(user);

@@ -5,8 +5,12 @@ package com.greenjiao.coc.common.enums;
  * @Date 2023/06/08 23:59
  * @Version 1.0
  */
-public interface ResponseCodeEnum {
+public interface ResponseEnum {
+    // ========== 成功响应 ==========
     Response SUCCESS = new Response(200, "成功");
+    Response LOGIN_SUCCESS = new Response(200, "登陆成功");
+    Response REGISTER_SUCCESS = new Response(200, "注册成功");
+    Response UPDATE_SUCCESS = new Response(200, "修改成功");
 
     // ========== 客户端错误段 ==========
 

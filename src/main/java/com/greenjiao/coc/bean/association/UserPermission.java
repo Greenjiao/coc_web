@@ -3,6 +3,7 @@ package com.greenjiao.coc.bean.association;
 import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableName;
 import com.github.jeffreyning.mybatisplus.anno.MppMultiId;
+import lombok.AllArgsConstructor;
 import lombok.Data;
 
 /**
@@ -15,6 +16,7 @@ import lombok.Data;
  */
 @Data
 @TableName("`relation_user_permission`")
+@AllArgsConstructor
 public class UserPermission {
 
     /**

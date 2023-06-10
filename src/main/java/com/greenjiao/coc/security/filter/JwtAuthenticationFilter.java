@@ -48,7 +48,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
             return;
         }
         String token = SecurityUtils.obtainAuthorization(request, securityProperties.getTokenHeader());
-        try{
+        try {
             if (StringUtils.isNotEmpty(token)) {
                 if (jwtUtils.isTokenTampered(token)) {
                     throw new ServiceException(HttpStatus.UNAUTHORIZED.value(), "token验证不通过,请重新登陆");
@@ -66,7 +66,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
             } else {
                 throw new ServiceException(HttpStatus.UNAUTHORIZED.value(), "未携带token");
             }
-        }catch (Exception e){
+        } catch (Exception e) {
             CommonResult<?> commonResult = globalExceptionHandler.allExceptionHandler(request, e);
             ServletUtils.writeJSON(response, commonResult);
             return;
