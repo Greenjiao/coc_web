@@ -32,13 +32,12 @@ public class JwtUtils {
      * jwt的唯一标识
      */
     public static final String JWT_ID = UUID.randomUUID().toString().replace("-", "");
+    protected static final long MILLIS_SECOND = 1000;
+    protected static final long MILLIS_MINUTE = 60 * MILLIS_SECOND;
     /**
      * 过期时间10日
      */
     private static final long EXPIRE_TIME = 10 * 24 * 60 * 60 * 1000L;
-    protected static final long MILLIS_SECOND = 1000;
-
-    protected static final long MILLIS_MINUTE = 60 * MILLIS_SECOND;
     private static final Long MILLIS_MINUTE_TEN = 20 * 60 * 1000L;
     private static final int TOKEN_EXPIRE_TIME = 30;
     /**

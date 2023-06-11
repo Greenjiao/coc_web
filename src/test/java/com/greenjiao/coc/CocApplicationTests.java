@@ -20,7 +20,7 @@ class CocApplicationTests {
     private UserMapper userMapper;
     @Test
     void userTest(){
-        QueryWrapper<User> select = new QueryWrapper<User>();
+        QueryWrapper<User> select = new QueryWrapper<>();
         select.select("id");
         List<User> users = userMapper.selectList(select);
         System.out.println(users);

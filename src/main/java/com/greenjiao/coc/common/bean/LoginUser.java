@@ -25,10 +25,6 @@ import java.util.List;
 @AllArgsConstructor
 @JsonIgnoreProperties(value = {"enabled", "password", "username", "accountNonExpired", "accountNonLocked", "credentialsNonExpired"})
 public class LoginUser implements UserDetails {
-    public LoginUser() {
-
-    }
-
     private User user;
     /**
      * 过期时间
@@ -49,6 +45,9 @@ public class LoginUser implements UserDetails {
      */
     private String token;
     private List<String> permissions;
+    public LoginUser() {
+
+    }
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {

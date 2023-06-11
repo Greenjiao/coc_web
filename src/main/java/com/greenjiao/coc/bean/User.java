@@ -26,76 +26,61 @@ import java.time.LocalDateTime;
 @Data
 @TableName("`tb_user`")
 public class User {
-    public User() {
-
-    }
-
     /**
      * 主键
      */
     @TableId(value = "`id`", type = IdType.ASSIGN_ID)
     private String id;
-
     /**
      * 账号
      */
     @TableField("`account`")
     private String account;
-
     /**
      * 密码
      */
     @TableField("`password`")
     private String password;
-
     /**
      * 姓名
      */
     @TableField("`name`")
     private String name;
-
     /**
      * 性别
      */
     @TableField("`gender`")
     private String gender;
-
     /**
      * 手机号
      */
     @TableField("`telephone`")
     private String telephone;
-
     /**
      * 邮箱
      */
     @TableField("`email`")
     private String email;
-
     /**
      * 签名
      */
     @TableField("`signature`")
     private String signature;
-
     /**
      * 头像地址
      */
     @TableField("`avatar_address`")
     private String avatarAddress;
-
     /**
      * 是否被封禁
      */
     @TableField("`banned`")
     private Boolean banned;
-
     /**
      * 备注
      */
     @TableField("`remark`")
     private String remark;
-
     /**
      * 创建时间
      */
@@ -104,7 +89,6 @@ public class User {
     @JsonSerialize(using = LocalDateTimeSerializer.class)
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+8")
     private LocalDateTime createTime;
-
     /**
      * 删除时间
      */
@@ -113,10 +97,13 @@ public class User {
     @JsonSerialize(using = LocalDateTimeSerializer.class)
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+8")
     private LocalDateTime deleteTime;
-
     /**
      * 逻辑删除
      */
     @TableField("`is_deleted`")
     private Integer isDeleted;
+
+    public User() {
+
+    }
 }
